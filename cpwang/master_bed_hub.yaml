@@ -20,7 +20,6 @@ captive_portal:
 
 # Enable logging
 logger:
-  level: VERBOSE
 
 # Enable Home Assistant API
 api:
@@ -29,7 +28,9 @@ api:
 ota:
   password: !secret esphome_password
 
-# Following are copied from
+esp32_ble_tracker:
+
+# Following setup for LCD, Wifi, battery are copied from
 # https://github.com/airy10/esphome-m5stickC/blob/master/sample-config/m5stickc.yaml
 
 # AXP192 power management - must be present to initialize TFT power on
@@ -45,6 +46,14 @@ sensor:
   - platform: wifi_signal
     name: "${upper_devicename} WiFi Signal"
     id: wifi_dbm
+  - platform: xiaomi_cgg1
+    mac_address: 58:2D:34:10:71:48
+    temperature:
+      name: "Master Bedroom Temperature"
+    humidity:
+      name: "Master Bedroom Humidity"
+    battery_level:
+      name: "Master Bedroom CGG1 Battery"
 
 spi:
   clk_pin: GPIO13
