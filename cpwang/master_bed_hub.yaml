@@ -38,6 +38,7 @@ sensor:
     address: 0x34
     i2c_id: bus_a
     update_interval: 30s
+    brightness: 0.3
     battery_level:
       name: "${upper_devicename} Battery Level"
       id: battery_level
