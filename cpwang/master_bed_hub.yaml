@@ -1,0 +1,26 @@
+esphome:
+  name: master_bed_hub
+  platform: ESP32
+  board: m5stick-c
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Master Bed Hub Fallback Hotspot"
+    password: "lWzjbAS0kDRe"
+
+captive_portal:
+
+# Enable logging
+logger:
+  level: VERBOSE
+
+# Enable Home Assistant API
+api:
+  password: !secret esphome_password
+
+ota:
+  password: !secret esphome_password
