@@ -20,6 +20,7 @@ captive_portal:
 
 # Enable logging
 logger:
+  # level: VERBOSE
 
 # Enable Home Assistant API
 api:
@@ -30,22 +31,7 @@ ota:
 
 esp32_ble_tracker:
 
-# Following setup for LCD, Wifi, battery are copied from
-# https://github.com/airy10/esphome-m5stickC/blob/master/sample-config/m5stickc.yaml
-
-# AXP192 power management - must be present to initialize TFT power on
 sensor:
-  - platform: axp192
-    address: 0x34
-    i2c_id: bus_a
-    update_interval: 30s
-    brightness: 0.3
-    battery_level:
-      name: "${upper_devicename} Battery Level"
-      id: battery_level
-  - platform: wifi_signal
-    name: "${upper_devicename} WiFi Signal"
-    id: wifi_dbm
   - platform: xiaomi_cgg1
     mac_address: 58:2D:34:10:71:48
     temperature:
@@ -53,46 +39,45 @@ sensor:
     humidity:
       name: "Master Bedroom Humidity"
     battery_level:
-      name: "Master Bedroom CGG1 Battery"
+      name: "Master Bedroom Thermometer Battery"
 
-spi:
-  clk_pin: GPIO13
-  mosi_pin: GPIO15
+# Following are copied from
+# https://github.com/airy10/esphome-m5stickC/blob/master/sample-config/m5stickc.yaml
 
-i2c:
-  - id: bus_a
-    sda: GPIO21
-    scl: GPIO22
-    scan: True
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO37
+      inverted: true
+    name: ${upper_devicename} Button A
+    on_press:
+      then:
+        - light.turn_on: led1
+    on_release:
+      then:
+        - light.turn_off: led1
+        
+  - platform: gpio
+    pin:
+      number: GPIO39
+      inverted: true
+    name: ${upper_devicename} Button B
+    on_press:
+      then:
+        - light.turn_on: led1
+    on_release:
+      then:
+        - light.turn_off: led1
 
-font:
-  - file: 'arial.ttf'
-    id: font1
-    size: 8
+# internal LED
+light:
+  - platform: monochromatic
+    output:  builtin_led
+    name: ${upper_devicename} Led
+    id: led1
 
-  - file: 'arial.ttf'
-    id: font2
-    size: 36
-
-  - file: 'arial.ttf'
-    id: font3
-    size: 14
-
-# builtin 80x160 TFT
-display:
-  - platform: st7735
-    cs_pin: GPIO5
-    dc_pin: GPIO23
-    reset_pin: GPIO18
-    rotation: 270
-    lambda: |-
-      it.print(80, 0, id(font1), ST77XX_WHITE, TextAlign::TOP_CENTER, "${upper_devicename}");
-      char str[128];
-      if (id(wifi_dbm).has_state()) {
-        sprintf(str, "%.0f dBm", id(wifi_dbm).state);
-        it.print(80, 40, id(font2), ST77XX_RED, TextAlign::CENTER, str);
-      } else {
-        it.print(80, 40, id(font2), ST77XX_RED, TextAlign::CENTER, "No Wifi");
-      }
-      sprintf(str, "%.0f%%", id(battery_level).state);
-      it.print(80, 60, id(font3), ST77XX_BLUE, TextAlign::TOP_CENTER, str);
+output:
+  - platform: ledc
+    pin: 10
+    inverted: true
+    id: builtin_led
