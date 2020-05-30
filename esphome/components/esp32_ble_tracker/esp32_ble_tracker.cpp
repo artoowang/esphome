@@ -156,6 +156,8 @@ void ESP32BLETracker::start_scan(bool first) {
   this->scan_params_.scan_filter_policy = BLE_SCAN_FILTER_ALLOW_ALL;
   this->scan_params_.scan_interval = this->scan_interval_;
   this->scan_params_.scan_window = this->scan_window_;
+  ESP_LOGW(TAG, "ZZZ: Test enable scan duplicate.");
+  this->scan_params_.scan_duplicate = BLE_SCAN_DUPLICATE_ENABLE;
 
   esp_ble_gap_set_scan_params(&this->scan_params_);
   esp_ble_gap_start_scanning(this->scan_duration_);
