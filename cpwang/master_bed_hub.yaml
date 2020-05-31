@@ -7,27 +7,27 @@ esphome:
   platform: ESP32
   board: m5stick-c
 
-wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
+#wifi:
+#  ssid: !secret wifi_ssid
+#  password: !secret wifi_password
+#
+#  # Enable fallback hotspot (captive portal) in case wifi connection fails
+#  ap:
+#    ssid: "Master Bed Hub Fallback Hotspot"
+#    password: !secret wifi_password
 
-  # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: "Master Bed Hub Fallback Hotspot"
-    password: !secret wifi_password
-
-captive_portal:
+#captive_portal:
 
 # Enable logging
 logger:
   # level: VERBOSE
 
 # Enable Home Assistant API
-api:
-  password: !secret esphome_password
-
-ota:
-  password: !secret esphome_password
+#api:
+#  password: !secret esphome_password
+#
+#ota:
+#  password: !secret esphome_password
 
 esp32_ble_tracker:
   scan_parameters:
@@ -61,40 +61,40 @@ esp32_ble_tracker:
 # Following are copied from
 # https://github.com/airy10/esphome-m5stickC/blob/master/sample-config/m5stickc.yaml
 
-binary_sensor:
-  - platform: gpio
-    pin:
-      number: GPIO37
-      inverted: true
-    name: ${upper_devicename} Button A
-    on_press:
-      then:
-        - light.turn_on: led1
-    on_release:
-      then:
-        - light.turn_off: led1
-        
-  - platform: gpio
-    pin:
-      number: GPIO39
-      inverted: true
-    name: ${upper_devicename} Button B
-    on_press:
-      then:
-        - light.turn_on: led1
-    on_release:
-      then:
-        - light.turn_off: led1
-
-# internal LED
-light:
-  - platform: monochromatic
-    output:  builtin_led
-    name: ${upper_devicename} Led
-    id: led1
-
-output:
-  - platform: ledc
-    pin: 10
-    inverted: true
-    id: builtin_led
+#binary_sensor:
+#  - platform: gpio
+#    pin:
+#      number: GPIO37
+#      inverted: true
+#    name: ${upper_devicename} Button A
+#    on_press:
+#      then:
+#        - light.turn_on: led1
+#    on_release:
+#      then:
+#        - light.turn_off: led1
+#        
+#  - platform: gpio
+#    pin:
+#      number: GPIO39
+#      inverted: true
+#    name: ${upper_devicename} Button B
+#    on_press:
+#      then:
+#        - light.turn_on: led1
+#    on_release:
+#      then:
+#        - light.turn_off: led1
+#
+## internal LED
+#light:
+#  - platform: monochromatic
+#    output:  builtin_led
+#    name: ${upper_devicename} Led
+#    id: led1
+#
+#output:
+#  - platform: ledc
+#    pin: 10
+#    inverted: true
+#    id: builtin_led
