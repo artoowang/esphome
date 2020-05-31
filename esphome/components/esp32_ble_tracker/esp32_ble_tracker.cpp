@@ -49,7 +49,6 @@ void ESP32BLETracker::setup() {
 }
 
 void ESP32BLETracker::loop() {
-  //ESP_LOGW(TAG, "ZZZ: ESP32BLETracker::loop()");
   if (xSemaphoreTake(this->scan_end_lock_, 0L)) {
     xSemaphoreGive(this->scan_end_lock_);
     global_esp32_ble_tracker->start_scan(false);
@@ -57,9 +56,6 @@ void ESP32BLETracker::loop() {
 
   if (xSemaphoreTake(this->scan_result_lock_, 5L / portTICK_PERIOD_MS)) {
     uint32_t index = this->scan_result_index_;
-    if (index > 0) {
-      ESP_LOGW(TAG, "loop() gets %d scan results.", index);
-    }
     xSemaphoreGive(this->scan_result_lock_);
 
     if (index >= 16) {
@@ -81,9 +77,6 @@ void ESP32BLETracker::loop() {
 
     if (xSemaphoreTake(this->scan_result_lock_, 10L / portTICK_PERIOD_MS)) {
       this->scan_result_index_ = 0;
-      if (index > 0) {
-        ESP_LOGW(TAG, "loop() clears scan result back to 0.");
-      }
       xSemaphoreGive(this->scan_result_lock_);
     }
   }
@@ -202,7 +195,6 @@ void ESP32BLETracker::start_scan(bool first) {
 }
 
 void ESP32BLETracker::gap_event_handler(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param_t *param) {
-  //ESP_LOGW(TAG, "ZZZ: ESP32BLETracker::gap_event_handler(%d)", event);
   switch (event) {
     case ESP_GAP_BLE_SCAN_RESULT_EVT:
       global_esp32_ble_tracker->gap_scan_result(param->scan_rst);
@@ -227,11 +219,10 @@ void ESP32BLETracker::gap_scan_start_complete(const esp_ble_gap_cb_param_t::ble_
 }
 
 void ESP32BLETracker::gap_scan_result(const esp_ble_gap_cb_param_t::ble_scan_result_evt_param &param) {
-  ESP_LOGW(TAG, "ZZZ: gap_scan_result: %d, %02x:%02x:%02x:%02x:%02x:%02x, %d", param.search_evt, param.bda[0],
-           param.bda[1], param.bda[2], param.bda[3], param.bda[4], param.bda[5], param.ble_evt_type);
+  //ESP_LOGW(TAG, "ZZZ: gap_scan_result: %d, %02x:%02x:%02x:%02x:%02x:%02x, %d", param.search_evt, param.bda[0],
+  //         param.bda[1], param.bda[2], param.bda[3], param.bda[4], param.bda[5], param.ble_evt_type);
   if (param.search_evt == ESP_GAP_SEARCH_INQ_RES_EVT) {
     if (xSemaphoreTake(this->scan_result_lock_, 0L)) {
-      ESP_LOGW(TAG, "ZZZ: gap_scan_result: store at index %d", this->scan_result_index_);
       if (this->scan_result_index_ < 16) {
         this->scan_result_buffer_[this->scan_result_index_++] = param;
       }
