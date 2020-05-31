@@ -16,7 +16,7 @@ wifi:
     ssid: "Master Bed Hub Fallback Hotspot"
     password: !secret wifi_password
 
-#captive_portal:
+captive_portal:
 
 # Enable logging
 logger:
@@ -61,40 +61,40 @@ sensor:
 # Following are copied from
 # https://github.com/airy10/esphome-m5stickC/blob/master/sample-config/m5stickc.yaml
 
-#binary_sensor:
-#  - platform: gpio
-#    pin:
-#      number: GPIO37
-#      inverted: true
-#    name: ${upper_devicename} Button A
-#    on_press:
-#      then:
-#        - light.turn_on: led1
-#    on_release:
-#      then:
-#        - light.turn_off: led1
-#        
-#  - platform: gpio
-#    pin:
-#      number: GPIO39
-#      inverted: true
-#    name: ${upper_devicename} Button B
-#    on_press:
-#      then:
-#        - light.turn_on: led1
-#    on_release:
-#      then:
-#        - light.turn_off: led1
-#
-## internal LED
-#light:
-#  - platform: monochromatic
-#    output:  builtin_led
-#    name: ${upper_devicename} Led
-#    id: led1
-#
-#output:
-#  - platform: ledc
-#    pin: 10
-#    inverted: true
-#    id: builtin_led
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO37
+      inverted: true
+    name: ${upper_devicename} Button A
+    on_press:
+      then:
+        - light.turn_on: led1
+    on_release:
+      then:
+        - light.turn_off: led1
+        
+  - platform: gpio
+    pin:
+      number: GPIO39
+      inverted: true
+    name: ${upper_devicename} Button B
+    on_press:
+      then:
+        - light.turn_on: led1
+    on_release:
+      then:
+        - light.turn_off: led1
+
+# internal LED
+light:
+  - platform: monochromatic
+    output:  builtin_led
+    name: ${upper_devicename} Led
+    id: led1
+
+output:
+  - platform: ledc
+    pin: 10
+    inverted: true
+    id: builtin_led
