@@ -156,7 +156,7 @@ void ESP32BLETracker::start_scan(bool first) {
   this->scan_params_.scan_filter_policy = BLE_SCAN_FILTER_ALLOW_ONLY_WLST;
   this->scan_params_.scan_interval = 0x0010;
   this->scan_params_.scan_window = 0x0010;
-  this->scan_params_.scan_duplicate = BLE_SCAN_DUPLICATE_ENABLE;
+  this->scan_params_.scan_duplicate = BLE_SCAN_DUPLICATE_DISABLE;
 
   esp_ble_gap_set_scan_params(&this->scan_params_);
 
