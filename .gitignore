@@ -116,5 +116,6 @@ tests/.esphome/
 /.temp-clang-tidy.cpp
 
 *~
+*.swp
 
 cpwang/master_bed_hub/
