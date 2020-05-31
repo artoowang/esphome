@@ -151,19 +151,21 @@ void ESP32BLETracker::start_scan(bool first) {
       listener->on_scan_end();
   }
   this->already_discovered_.clear();
-  this->scan_params_.scan_type = this->scan_active_ ? BLE_SCAN_TYPE_ACTIVE : BLE_SCAN_TYPE_PASSIVE;
+  this->scan_params_.scan_type = BLE_SCAN_TYPE_PASSIVE;
   this->scan_params_.own_addr_type = BLE_ADDR_TYPE_PUBLIC;
-  this->scan_params_.scan_filter_policy = BLE_SCAN_FILTER_ALLOW_ALL;
-  this->scan_params_.scan_interval = this->scan_interval_;
-  this->scan_params_.scan_window = this->scan_window_;
+  this->scan_params_.scan_filter_policy = BLE_SCAN_FILTER_ALLOW_ONLY_WLST;
+  this->scan_params_.scan_interval = 0x0010;
+  this->scan_params_.scan_window = 0x0010;
+  this->scan_params_.scan_duplicate = BLE_SCAN_DUPLICATE_ENABLE;
 
   esp_ble_gap_set_scan_params(&this->scan_params_);
-  esp_ble_gap_start_scanning(this->scan_duration_);
 
-  this->set_timeout("scan", this->scan_duration_ * 2000, []() {
-    ESP_LOGW(TAG, "ESP-IDF BLE scan never terminated, rebooting to restore BLE stack...");
-    App.reboot();
-  });
+  esp_bd_addr_t cgg1 = {0x58, 0x2D, 0x34, 0x10, 0x71, 0x48};
+  esp_ble_gap_update_whitelist(/*add_remove=*/ true, cgg1);
+  esp_bd_addr_t hhccjcy01 = {0xC4, 0x7C, 0x8D, 0x64, 0x11, 0x53};
+  esp_ble_gap_update_whitelist(/*add_remove=*/ true, hhccjcy01);
+  
+  esp_ble_gap_start_scanning(0);
 }
 
 void ESP32BLETracker::gap_event_handler(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param_t *param) {
@@ -191,16 +193,8 @@ void ESP32BLETracker::gap_scan_start_complete(const esp_ble_gap_cb_param_t::ble_
 }
 
 void ESP32BLETracker::gap_scan_result(const esp_ble_gap_cb_param_t::ble_scan_result_evt_param &param) {
-  if (param.search_evt == ESP_GAP_SEARCH_INQ_RES_EVT) {
-    if (xSemaphoreTake(this->scan_result_lock_, 0L)) {
-      if (this->scan_result_index_ < 16) {
-        this->scan_result_buffer_[this->scan_result_index_++] = param;
-      }
-      xSemaphoreGive(this->scan_result_lock_);
-    }
-  } else if (param.search_evt == ESP_GAP_SEARCH_INQ_CMPL_EVT) {
-    xSemaphoreGive(this->scan_end_lock_);
-  }
+  ESP_LOGW(TAG, "ZZZ: gap_scan_result: %d, %02x:%02x:%02x:%02x:%02x:%02x, %d", param.search_evt, param.bda[0],
+      param.bda[1], param.bda[2], param.bda[3], param.bda[4], param.bda[5], param.ble_evt_type);
 }
 
 ESPBTUUID::ESPBTUUID() : uuid_() {}
@@ -527,11 +521,6 @@ std::string ESPBTDevice::address_str() const {
 uint64_t ESPBTDevice::address_uint64() const { return ble_addr_to_uint64(this->address_); }
 
 void ESP32BLETracker::dump_config() {
-  ESP_LOGCONFIG(TAG, "BLE Tracker:");
-  ESP_LOGCONFIG(TAG, "  Scan Duration: %u s", this->scan_duration_);
-  ESP_LOGCONFIG(TAG, "  Scan Interval: %.1f ms", this->scan_interval_ * 0.625f);
-  ESP_LOGCONFIG(TAG, "  Scan Window: %.1f ms", this->scan_window_ * 0.625f);
-  ESP_LOGCONFIG(TAG, "  Scan Type: %s", this->scan_active_ ? "ACTIVE" : "PASSIVE");
 }
 void ESP32BLETracker::print_bt_device_info(const ESPBTDevice &device) {
   const uint64_t address = device.address_uint64();
