@@ -20,7 +20,6 @@ captive_portal:
 
 # Enable logging
 logger:
-  # level: VERBOSE
 
 # Enable Home Assistant API
 api:
@@ -31,9 +30,10 @@ ota:
 
 esp32_ble_tracker:
   scan_parameters:
-    # interval: 100ms
-    # window: 50ms
+    interval: 10ms
+    window: 10ms
     active: false
+    duration: 0
 
 sensor:
   - platform: xiaomi_cgg1
