@@ -33,7 +33,6 @@ esp32_ble_tracker:
     interval: 10ms
     window: 10ms
     active: false
-    duration: 0
 
 sensor:
   - platform: xiaomi_cgg1
