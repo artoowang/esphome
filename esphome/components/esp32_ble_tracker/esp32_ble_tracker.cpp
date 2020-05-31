@@ -229,17 +229,17 @@ void ESP32BLETracker::gap_scan_start_complete(const esp_ble_gap_cb_param_t::ble_
 void ESP32BLETracker::gap_scan_result(const esp_ble_gap_cb_param_t::ble_scan_result_evt_param &param) {
   ESP_LOGW(TAG, "ZZZ: gap_scan_result: %d, %02x:%02x:%02x:%02x:%02x:%02x, %d", param.search_evt, param.bda[0],
            param.bda[1], param.bda[2], param.bda[3], param.bda[4], param.bda[5], param.ble_evt_type);
-  //if (param.search_evt == ESP_GAP_SEARCH_INQ_RES_EVT) {
-  //  if (xSemaphoreTake(this->scan_result_lock_, 0L)) {
-  //    ESP_LOGW(TAG, "ZZZ: gap_scan_result: store at index %d", this->scan_result_index_);
-  //    if (this->scan_result_index_ < 16) {
-  //      this->scan_result_buffer_[this->scan_result_index_++] = param;
-  //    }
-  //    xSemaphoreGive(this->scan_result_lock_);
-  //  }
-  //} else if (param.search_evt == ESP_GAP_SEARCH_INQ_CMPL_EVT) {
-  //  xSemaphoreGive(this->scan_end_lock_);
-  //}
+  if (param.search_evt == ESP_GAP_SEARCH_INQ_RES_EVT) {
+    if (xSemaphoreTake(this->scan_result_lock_, 0L)) {
+      ESP_LOGW(TAG, "ZZZ: gap_scan_result: store at index %d", this->scan_result_index_);
+      if (this->scan_result_index_ < 16) {
+        this->scan_result_buffer_[this->scan_result_index_++] = param;
+      }
+      xSemaphoreGive(this->scan_result_lock_);
+    }
+  } else if (param.search_evt == ESP_GAP_SEARCH_INQ_CMPL_EVT) {
+    xSemaphoreGive(this->scan_end_lock_);
+  }
 }
 
 std::string hexencode_string(const std::string &raw_data) {
