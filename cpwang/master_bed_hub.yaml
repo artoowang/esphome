@@ -7,14 +7,14 @@ esphome:
   platform: ESP32
   board: m5stick-c
 
-#wifi:
-#  ssid: !secret wifi_ssid
-#  password: !secret wifi_password
-#
-#  # Enable fallback hotspot (captive portal) in case wifi connection fails
-#  ap:
-#    ssid: "Master Bed Hub Fallback Hotspot"
-#    password: !secret wifi_password
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Master Bed Hub Fallback Hotspot"
+    password: !secret wifi_password
 
 #captive_portal:
 
@@ -23,11 +23,11 @@ logger:
   # level: VERBOSE
 
 # Enable Home Assistant API
-#api:
-#  password: !secret esphome_password
-#
-#ota:
-#  password: !secret esphome_password
+api:
+  password: !secret esphome_password
+
+ota:
+  password: !secret esphome_password
 
 esp32_ble_tracker:
   scan_parameters:
@@ -35,28 +35,28 @@ esp32_ble_tracker:
     # window: 50ms
     active: false
 
-#sensor:
-#  - platform: xiaomi_cgg1
-#    mac_address: "58:2D:34:10:71:48"
-#    temperature:
-#      name: "Master Bedroom Temperature"
-#    humidity:
-#      name: "Master Bedroom Humidity"
-#    battery_level:
-#      name: "Master Bedroom Thermometer Battery"
-#
-#  - platform: xiaomi_hhccjcy01
-#    mac_address: "C4:7C:8D:64:11:53"
-#    temperature:
-#      name: "Boston Ivy Temperature"
-#    moisture:
-#      name: "Boston Ivy Moisture"
-#    illuminance:
-#      name: "Boston Ivy Illuminance"
-#    conductivity:
-#      name: "Boston Ivy Conductivity"
-#    battery_level:
-#      name: "Boston Ivy Battery"
+sensor:
+  - platform: xiaomi_cgg1
+    mac_address: "58:2D:34:10:71:48"
+    temperature:
+      name: "Master Bedroom Temperature"
+    humidity:
+      name: "Master Bedroom Humidity"
+    battery_level:
+      name: "Master Bedroom Thermometer Battery"
+
+  - platform: xiaomi_hhccjcy01
+    mac_address: "C4:7C:8D:64:11:53"
+    temperature:
+      name: "Boston Ivy Temperature"
+    moisture:
+      name: "Boston Ivy Moisture"
+    illuminance:
+      name: "Boston Ivy Illuminance"
+    conductivity:
+      name: "Boston Ivy Conductivity"
+    battery_level:
+      name: "Boston Ivy Battery"
 
 # Following are copied from
 # https://github.com/airy10/esphome-m5stickC/blob/master/sample-config/m5stickc.yaml
