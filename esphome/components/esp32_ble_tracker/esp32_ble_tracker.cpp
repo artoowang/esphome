@@ -166,14 +166,14 @@ void ESP32BLETracker::start_scan(bool first) {
   //this->scan_params_.scan_interval = this->scan_interval_;
   //this->scan_params_.scan_window = this->scan_window_;
   //ESP_LOGW(TAG, "ZZZ: Test enable scan duplicate.");
-  //this->scan_params_.scan_duplicate = BLE_SCAN_DUPLICATE_ENABLE;
+  //this->scan_params_.scan_duplicate = BLE_SCAN_DUPLICATE_DISABLE;
 
   this->scan_params_.scan_type = BLE_SCAN_TYPE_PASSIVE;
   this->scan_params_.own_addr_type = BLE_ADDR_TYPE_PUBLIC;
   this->scan_params_.scan_filter_policy = BLE_SCAN_FILTER_ALLOW_ONLY_WLST;
   this->scan_params_.scan_interval = 0x0010;
   this->scan_params_.scan_window = 0x0010;
-  this->scan_params_.scan_duplicate = BLE_SCAN_DUPLICATE_ENABLE;
+  this->scan_params_.scan_duplicate = BLE_SCAN_DUPLICATE_DISABLE;
 
   if (esp_ble_gap_set_scan_params(&this->scan_params_) != ESP_OK) {
     ESP_LOGE(TAG, "esp_ble_gap_set_scan_params failed.");
