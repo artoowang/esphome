@@ -10,9 +10,6 @@ __pycache__/
 *.sublime-project
 *.sublime-workspace
 
-# Intellij Idea
-.idea
-
 # Hide some OS X stuff
 .DS_Store
 .AppleDouble
@@ -51,10 +48,8 @@ htmlcov/
 .coverage
 .coverage.*
 .cache
-.esphome
 nosetests.xml
 coverage.xml
-cov.xml
 *.cover
 .hypothesis/
 .pytest_cache/
@@ -119,3 +114,8 @@ config/
 tests/build/
 tests/.esphome/
 /.temp-clang-tidy.cpp
+
+*~
+*.swp
+
+cpwang/master_bed_hub/

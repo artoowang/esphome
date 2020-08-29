@@ -1,0 +1,108 @@
+substitutions:
+  devicename: master_bed_hub
+  upper_devicename: "Master Bedroom Hub"
+
+esphome:
+  name: $devicename
+  platform: ESP32
+  board: m5stick-c
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Master Bed Hub Fallback Hotspot"
+    password: !secret wifi_password
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: !secret esphome_password
+
+ota:
+  password: !secret esphome_password
+
+esp32_ble_tracker:
+  scan_parameters:
+    interval: 10ms
+    window: 10ms
+    active: false
+
+sensor:
+  - platform: xiaomi_cgg1
+    mac_address: "58:2D:34:10:71:48"
+    temperature:
+      name: "Master Bedroom Temperature"
+    humidity:
+      name: "Master Bedroom Humidity"
+    battery_level:
+      name: "Master Bedroom Thermometer Battery"
+
+  - platform: xiaomi_hhccjcy01
+    mac_address: "C4:7C:8D:64:11:53"
+    temperature:
+      name: "Boston Ivy Temperature"
+    moisture:
+      name: "Boston Ivy Moisture"
+    illuminance:
+      name: "Boston Ivy Illuminance"
+    conductivity:
+      name: "Boston Ivy Conductivity"
+    battery_level:
+      name: "Boston Ivy Battery"
+
+  - platform: xiaomi_lywsdcgq
+    mac_address: "58:2D:34:3A:3C:03"
+    temperature:
+      name: "Attic Temperature"
+    humidity:
+      name: "Attic Humidity"
+    battery_level:
+      name: "Attic Thermometer Battery"
+
+# Following are copied from
+# https://github.com/airy10/esphome-m5stickC/blob/master/sample-config/m5stickc.yaml
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO37
+      inverted: true
+    name: ${upper_devicename} Button A
+    on_press:
+      then:
+        - light.turn_on: led1
+    on_release:
+      then:
+        - light.turn_off: led1
+        
+  - platform: gpio
+    pin:
+      number: GPIO39
+      inverted: true
+    name: ${upper_devicename} Button B
+    on_press:
+      then:
+        - light.turn_on: led1
+    on_release:
+      then:
+        - light.turn_off: led1
+
+# internal LED
+light:
+  - platform: monochromatic
+    output:  builtin_led
+    name: ${upper_devicename} Led
+    id: led1
+
+output:
+  - platform: ledc
+    pin: 10
+    inverted: true
+    id: builtin_led
