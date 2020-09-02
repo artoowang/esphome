@@ -74,7 +74,6 @@ sensor:
     battery_level:
       name: "Mi Thermometer Battery"
 
-  # TODO: Test
   - platform: govee
     mac_address: "A4:C1:38:68:DF:F0"
     temperature:
@@ -99,7 +98,7 @@ binary_sensor:
     on_release:
       then:
         - light.turn_off: led1
-        
+
   - platform: gpio
     pin:
       number: GPIO39
