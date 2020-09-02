@@ -54,8 +54,6 @@ sensor:
       name: "Boston Ivy Illuminance"
     conductivity:
       name: "Boston Ivy Conductivity"
-    battery_level:
-      name: "Boston Ivy Battery"
 
   - platform: xiaomi_lywsdcgq
     mac_address: "58:2D:34:3A:3C:03"
@@ -65,6 +63,26 @@ sensor:
       name: "Attic Humidity"
     battery_level:
       name: "Attic Thermometer Battery"
+
+  - platform: xiaomi_lywsd03mmc
+    mac_address: "A4:C1:38:3C:D0:14"
+    bindkey: "861eafb27823f29a9bee633ffeb5d7a4"
+    temperature:
+      name: "Mi Temperature"
+    humidity:
+      name: "Mi Humidity"
+    battery_level:
+      name: "Mi Thermometer Battery"
+
+  # TODO: Test
+  - platform: govee
+    mac_address: "A4:C1:38:68:DF:F0"
+    temperature:
+      name: "Govee H5075 Temperature"
+    humidity:
+      name: "Govee H5075 Humidity"
+    battery_level:
+      name: "Govee H5075 Battery"
 
 # Following are copied from
 # https://github.com/airy10/esphome-m5stickC/blob/master/sample-config/m5stickc.yaml
