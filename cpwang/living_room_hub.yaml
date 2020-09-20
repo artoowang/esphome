@@ -1,6 +1,6 @@
 substitutions:
-  devicename: master_bed_hub
-  upper_devicename: "Master Bedroom Hub"
+  devicename: living_room_hub
+  upper_devicename: "Living Room Hub"
 
 esphome:
   name: $devicename
@@ -13,7 +13,7 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "Master Bed Hub Fallback Hotspot"
+    ssid: "Living Room Hub Fallback Hotspot"
     password: !secret wifi_password
 
 captive_portal:
@@ -35,53 +35,14 @@ esp32_ble_tracker:
     active: true
 
 sensor:
-  - platform: xiaomi_cgg1
-    mac_address: "58:2D:34:10:71:48"
-    temperature:
-      name: "Master Bedroom Temperature"
-    humidity:
-      name: "Master Bedroom Humidity"
-    battery_level:
-      name: "Master Bedroom Thermometer Battery"
-
-  - platform: xiaomi_hhccjcy01
-    mac_address: "C4:7C:8D:64:11:53"
-    temperature:
-      name: "Boston Ivy Temperature"
-    moisture:
-      name: "Boston Ivy Moisture"
-    illuminance:
-      name: "Boston Ivy Illuminance"
-    conductivity:
-      name: "Boston Ivy Conductivity"
-
-  - platform: xiaomi_lywsdcgq
-    mac_address: "58:2D:34:3A:3C:03"
-    temperature:
-      name: "Attic Temperature"
-    humidity:
-      name: "Attic Humidity"
-    battery_level:
-      name: "Attic Thermometer Battery"
-
-  - platform: xiaomi_lywsd03mmc
-    mac_address: "A4:C1:38:3C:D0:14"
-    bindkey: "861eafb27823f29a9bee633ffeb5d7a4"
-    temperature:
-      name: "Mi Temperature"
-    humidity:
-      name: "Mi Humidity"
-    battery_level:
-      name: "Mi Thermometer Battery"
-
   - platform: govee
-    mac_address: "A4:C1:38:68:DF:F0"
+    mac_address: "E3:60:58:E2:24:B4"
     temperature:
-      name: "Govee H5075 Temperature"
+      name: "Crawl Space Temperature"
     humidity:
-      name: "Govee H5075 Humidity"
+      name: "Crawl Space Humidity"
     battery_level:
-      name: "Govee H5075 Battery"
+      name: "Crawl Space Battery"
 
 # Following are copied from
 # https://github.com/airy10/esphome-m5stickC/blob/master/sample-config/m5stickc.yaml
